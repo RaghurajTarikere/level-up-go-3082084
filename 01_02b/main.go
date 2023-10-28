@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strings"
 	"time"
 )
 
@@ -16,7 +17,16 @@ func print(msg string) {
 // slowDown takes the given string and repeats its characters
 // according to their index in the string.
 func slowDown(msg string) {
-	panic("NOT IMPLEMENTED")
+	words := strings.Split(msg, " ")
+	for _, word := range words {
+		chars := strings.Split(word, "")
+		for idx, char := range chars {
+			for i := 0; i < idx; i++ {
+				chars[idx] += char
+			}
+		}
+		print(strings.Join(chars, ""))
+	}
 }
 
 func main() {
