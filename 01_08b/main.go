@@ -40,15 +40,27 @@ func (f *Friends) getRandomFriend() Friend {
 	return f.getFriend(fmt.Sprint(id))
 }
 
+func spreadGossipInt(curFriend Friend, friends Friends, gossipMap map[string]bool) {
+	if gossipMap[curFriend.ID] {
+		return
+	}
+	curFriend.hearGossip()
+	gossipMap[curFriend.ID] = true
+	for _, friendID := range curFriend.Friends {
+		friend := friends.fmap[friendID]
+		spreadGossipInt(friend, friends, gossipMap)
+	}
+}
+
 // spreadGossip ensures that all the friends in the map have heard the news
 func spreadGossip(root Friend, friends Friends) {
-	panic("NOT IMPLEMENTED")
+	gossipMap := make(map[string]bool, 12)
+	spreadGossipInt(root, friends, gossipMap)
 }
 
 func main() {
 	friends := importData()
 	root := friends.getRandomFriend()
-	root.hearGossip()
 	spreadGossip(root, friends)
 }
 
